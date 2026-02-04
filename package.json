@@ -29,6 +29,9 @@
   "homepage": "https://github.com/sudeeppatgar/feature-rich-express-api#readme",
   "dependencies": {
     "cors": "^2.8.6",
-    "express": "^5.2.1"
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "helmet": "^8.1.0",
+    "mongoose": "^9.1.5"
   }
 }
