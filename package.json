@@ -1,16 +1,26 @@
 {
   "name": "feature-rich-express-api",
   "version": "1.0.0",
-  "description": "hi",
-  "main": "index.js",
+  "description": "Feature-rich, production-ready Express.js backend",
+  "type": "module",
+  "main": "server.js",
   "scripts": {
+    "dev": "node --watch server.js",
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sudeeppatgar/feature-rich-express-api.git"
   },
-  "keywords": [],
+  "keywords": [
+    "nodejs",
+    "express",
+    "backend",
+    "api",
+    "mongodb",
+    "feature-rich"
+  ],
   "author": "",
   "license": "ISC",
   "bugs": {

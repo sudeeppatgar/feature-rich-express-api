@@ -4,7 +4,7 @@ dotenv.config();
 
 export const config = {
   port: process.env.PORT,
-  dbUri: process.env.DBURL,
+  dbUri: process.env.MONGO_URL,
   jwtSecret: process.env.JWT_SECRET,
   jwtExpiresIn: process.env.JWT_EXPIRES_IN,
 };
