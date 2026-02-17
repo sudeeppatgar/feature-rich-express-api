@@ -1,9 +1,9 @@
 import jwt from "jsonwebtoken";
 import { config } from "../config";
-import { ApiError } from "../utils/ApiError";
 import { asyncHandler } from "./async.middleware";
+import { ApiError } from "../utils/apiError";
 
-export const createMiddleware = ({ userModel, jwtSecret }) => {
+export const createAuthMiddleware = ({ model, jwtSecret }) => {
   const protect = asyncHandler(async (req, res, next) => {
     let token;
 
@@ -13,52 +13,36 @@ export const createMiddleware = ({ userModel, jwtSecret }) => {
     } else if (req.cookies?.accessToken) {
       token = req.cookies.accessToken;
     }
+
     if (!token) {
-      throw new ApiError(401, "Unauthorized access. No token provided. ");
+      throw new ApiError(401, "Unauthorized access. No token Provided");
     }
+
     try {
       const decoded = jwt.verify(token, jwtSecret);
-      const user = await userModal.findById(decoded.id);
-      if (!user) throw new ApiError(401, "invalid token, user not found");
+      const user = await model.findById(decoded.id);
+      if (!user) throw new ApiError(401, "Invalid token. User not found");
       if (!user.isActive)
-        throw new ApiError(401, "your account is inactive, contact support");
-      if (user.passwordChangedAt) {
-        const passwordChangedAt = parseInt(
-          user.passwordChangedAt.getTime() / 1000,
-          10,
-        );
-        if (passwordChangedAt > decoded.iat) {
-          throw new ApiError(
-            401,
-            "password changed recently, please login again",
-          );
-        }
-      }
+        throw new ApiError(403, "Your account is inactive. Contact support");
       req.user = user;
       next();
     } catch (error) {
-      throw new ApiError(401, error.message || "Invalid or expired token.");
+      throw new ApiError(401, error?.message || "Invalid or expired Token");
     }
   });
+
   const restrictTo =
     (...roles) =>
     (req, res, next) => {
       if (!roles.includes(req.user.role)) {
-        throw new ApiError(
-          403,
-          "Forbidden. You don't have permission to access this resource.",
-        );
+        throw new ApiError(403, "Access denied. Insufficient permissions.");
       }
       next();
     };
   return { protect, restrictTo };
 };
 
-export const { protect, restrictTo } = createMiddleware({
-  userModel: userModel,
+export const { protect, restrictTo } = createAuthMiddleware({
+  model: usermodel,
   jwtSecret: config.jwtSecret,
 });
-
-export const adminOnly = [protect, restrictTo("admin")];
-export const employeeOnly = [protect, restrictTo("employee")];
-export const customerOnly = [protect, restrictTo("customer")];
