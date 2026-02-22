@@ -24,6 +24,19 @@ export const createAuthMiddleware = ({ model, jwtSecret }) => {
       if (!user) throw new ApiError(401, "Invalid token. User not found");
       if (!user.isActive)
         throw new ApiError(403, "Your account is inactive. Contact support");
+      if (user.passwordChangedAt) {
+        const passwordChangedAt = parseInt(
+          user.passwordChangedAt.getTime() / 1000,
+          10,
+        );
+
+        if (passwordChangedAt > decoded.iat) {
+          throw new ApiError(
+            401,
+            "Password changed recently. Please log in again.",
+          );
+        }
+      }
       req.user = user;
       next();
     } catch (error) {
