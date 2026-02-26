@@ -1,7 +1,8 @@
 import jwt from "jsonwebtoken";
-import { config } from "../config";
-import { asyncHandler } from "./async.middleware";
-import { ApiError } from "../utils/apiError";
+import { config } from "../config/index.js";
+import { asyncHandler } from "./async.middleware.js";
+import { ApiError } from "../utils/ApiError.js";
+import { User as usermodel } from "../models/user.model.js";
 
 export const createAuthMiddleware = ({ model, jwtSecret }) => {
   const protect = asyncHandler(async (req, res, next) => {
