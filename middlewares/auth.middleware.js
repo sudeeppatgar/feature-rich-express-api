@@ -21,17 +21,24 @@ export const createAuthMiddleware = ({ model, jwtSecret }) => {
 
     try {
       const decoded = jwt.verify(token, jwtSecret);
+      if (
+        typeof decoded === "string" ||
+        !("id" in decoded) ||
+        typeof decoded.id !== "string"
+      ) {
+        throw new ApiError(401, "Invalid token payload");
+      }
+
       const user = await model.findById(decoded.id);
       if (!user) throw new ApiError(401, "Invalid token. User not found");
       if (!user.isActive)
         throw new ApiError(403, "Your account is inactive. Contact support");
       if (user.passwordChangedAt) {
-        const passwordChangedAt = parseInt(
+        const passwordChangedAt = Math.floor(
           user.passwordChangedAt.getTime() / 1000,
-          10,
         );
 
-        if (passwordChangedAt > decoded.iat) {
+        if (typeof decoded.iat === "number" && passwordChangedAt > decoded.iat) {
           throw new ApiError(
             401,
             "Password changed recently. Please log in again.",

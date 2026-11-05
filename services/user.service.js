@@ -39,6 +39,7 @@ const buildFilters = ({ role, isActive, search }) => {
   return filters;
 };
 
+/** @returns {Record<string, 1 | -1>} */
 const buildSort = ({ sort = "createdAt", order = "desc" }) => {
   const sortField = ALLOWED_SORT_FIELDS.has(sort) ? sort : "createdAt";
   return { [sortField]: order === "asc" ? 1 : -1 };
