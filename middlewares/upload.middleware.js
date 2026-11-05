@@ -1,6 +1,5 @@
 import multer from "multer";
 import fs from "fs";
-import fetch from "node-fetch";
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "./async.middleware.js";
 
@@ -122,7 +121,9 @@ export const useUpload = ({ folder = "misc", fields = [] }) => {
 
     // Execute multer upload first
     await new Promise((resolve, reject) =>
-      upload.fields(fields)(req, res, (err) => (err ? reject(err) : resolve()))
+      upload.fields(fields)(req, res, (err) =>
+        err ? reject(err) : resolve(undefined),
+      )
     );
 
     // Upload image buffers to IMGBB
