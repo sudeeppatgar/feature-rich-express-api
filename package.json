@@ -43,5 +43,10 @@
     "eslint": "^10.14.0",
     "globals": "^17.14.0",
     "supertest": "^7.3.1"
+  },
+  "overrides": {
+    "eslint": {
+      "minimatch": "^11.0.1"
+    }
   }
 }
