@@ -181,4 +181,4 @@ curl -X GET "http://localhost:5000/api/users?page=1&limit=10&sort=createdAt&orde
 - CI pipeline (lint/test checks)
 
 ## License
-ISC
+MIT (see [LICENSE](LICENSE)).
