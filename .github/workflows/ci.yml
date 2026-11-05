@@ -15,3 +15,11 @@ jobs:
     with:
       node-version: '22'
       run-audit: true
+
+  deploy:
+    name: Deploy to Render
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: quality
+    uses: sudeeppatgar/forgeflow/.github/workflows/reusable-render-deploy.yml@main
+    secrets:
+      RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}

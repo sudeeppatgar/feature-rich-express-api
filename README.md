@@ -123,6 +123,24 @@ npm run dev
 
 Server starts on `http://localhost:5000` (or your `PORT`).
 
+## Deploy to Render
+
+The GitHub Actions pipeline deploys this API to Render only after CI passes on a push to `main`.
+
+1. Create a Render **Web Service** connected to this GitHub repository and set its deploy branch to `main`.
+2. Set the build command to `npm ci` and the start command to `npm start`. Use Node.js 22.
+3. Configure these environment variables in Render:
+   - `MONGO_URL` — connection string for a hosted MongoDB database.
+   - `JWT_SECRET` — a strong, private signing secret.
+   - `JWT_EXPIRES_IN` — for example, `1w`.
+   - `IMGBB_API_KEY` — optional; required only for image uploads.
+   Render provides `PORT` automatically.
+4. In the Render service settings, set the health-check path to `/api`. This endpoint responds with the API welcome message.
+5. Create a Render deploy hook for the service and add its URL to the GitHub repository as an Actions secret named `RENDER_DEPLOY_HOOK_URL`.
+6. Turn off Render's automatic deploy-on-commit setting so it does not deploy before GitHub Actions finishes CI.
+
+After setup, pull requests run CI without deploying. A successful push or merge to `main` triggers the Render deploy hook, and Render builds and starts the latest commit on its configured branch. Deployments can also be manually started from the Render dashboard.
+
 ## API Usage Quick Examples
 
 ### Register
