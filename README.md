@@ -10,6 +10,12 @@ This project is designed to demonstrate backend engineering skills that matter i
 - Pagination, filtering, and sorting for scalable list endpoints
 - OpenAPI spec for API documentation
 
+## Live API
+
+- **Base URL:** [https://feature-rich-express-api.onrender.com](https://feature-rich-express-api.onrender.com)
+- **API status:** [https://feature-rich-express-api.onrender.com/api](https://feature-rich-express-api.onrender.com/api)
+- **OpenAPI specification:** [https://feature-rich-express-api.onrender.com/api/docs/openapi.json](https://feature-rich-express-api.onrender.com/api/docs/openapi.json)
+
 ## Tech Stack
 - Node.js
 - Express 5
