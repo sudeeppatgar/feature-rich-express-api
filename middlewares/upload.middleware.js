@@ -1,5 +1,4 @@
 import multer from "multer";
-import path from "path";
 import fs from "fs";
 import fetch from "node-fetch";
 import { ApiError } from "../utils/ApiError.js";
